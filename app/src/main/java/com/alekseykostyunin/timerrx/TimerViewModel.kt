@@ -10,15 +10,16 @@ import java.util.concurrent.TimeUnit
 class TimerViewModel : ViewModel() {
 
     private val initialTimer = mutableListOf(MyTimer(1, 0))
-    private val _timers2 = MutableStateFlow<List<MyTimer>>(initialTimer)
-    val timers2: StateFlow<List<MyTimer>> = _timers2
+
+    private val _timers = MutableStateFlow<List<MyTimer>>(initialTimer)
+    val timers: StateFlow<List<MyTimer>> = _timers
 
     private var disposables: MutableMap<Int, Disposable> = mutableMapOf()
 
     fun createNewTimer() {
-        val idLastTimer = _timers2.value.last().id
+        val idLastTimer = _timers.value.last().id
         val newTimer = MyTimer(idLastTimer + 1, 0)
-        _timers2.value += newTimer
+        _timers.value += newTimer
     }
 
     fun startTimer(timerId: Int) {
@@ -27,8 +28,8 @@ class TimerViewModel : ViewModel() {
         }
 
         disposables[timerId] = Observable.interval(1, TimeUnit.SECONDS)
-            .doOnNext { it ->
-                _timers2.value = _timers2.value.map { timer ->
+            .doOnNext {
+                _timers.value = _timers.value.map { timer ->
                     if(timer.id == timerId) {
                         timer.copy(time = it)
                     } else {
@@ -37,7 +38,7 @@ class TimerViewModel : ViewModel() {
                 }
             }
             .doOnComplete {
-                _timers2.value = _timers2.value.map { timer ->
+                _timers.value = _timers.value.map { timer ->
                     timer.copy(time = 0)
                 }
             }
@@ -45,9 +46,9 @@ class TimerViewModel : ViewModel() {
     }
 
     fun cancelTimer(timerId: Int) {
-        val timer = _timers2.value.find { it.id == timerId }
+        val timer = _timers.value.find { it.id == timerId }
         if (timer != null) {
-            _timers2.value = _timers2.value.map {
+            _timers.value = _timers.value.map {
                 if (it.id == timerId) {
                     it.copy(time = 0)
                 } else {

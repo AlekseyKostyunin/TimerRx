@@ -1,6 +1,5 @@
 package com.alekseykostyunin.timerrx
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,13 +28,12 @@ class MainActivity : ComponentActivity() {
 
     private var viewModel: TimerViewModel = TimerViewModel()
 
-    @SuppressLint("DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             TimerRxTheme {
-                val timers2 by viewModel.timers2.collectAsState()
+                val timers by viewModel.timers.collectAsState()
                 Scaffold(
                     content = { innerPadding ->
                         Box(
@@ -61,7 +59,7 @@ class MainActivity : ComponentActivity() {
 
                                 LazyColumn {
                                     items(
-                                        items = timers2,
+                                        items = timers,
                                         key = { it.id }
                                     ) {
                                         GetOneTimer(
