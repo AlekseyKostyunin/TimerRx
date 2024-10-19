@@ -48,7 +48,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-
+    implementation("androidx.compose.material3:material3")
     implementation(libs.rxjava)
     implementation(libs.rxandroid)
 
