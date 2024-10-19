@@ -54,9 +54,9 @@ fun GetOneTimer(
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = if (showSeconds.value) {
-                    timer.time.let { String.format("%02d:%02d", it / 60, it % 60) } ?: "00:00"
+                    timer.time.let { String.format("%02d:%02d", it / 60, it % 60) }
                 } else {
-                    timer.time.let { String.format("%02d мин.", it / 60) } ?: "00 мин"
+                    timer.time.let { String.format("%02d мин.", it / 60) }
                 },
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
